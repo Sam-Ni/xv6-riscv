@@ -1,6 +1,16 @@
 //
-// low-level driver for 16550a UART.
+// low-level driver for 16550a UART (Universal Asynchronous Receiver/Transmitter).
 //
+
+// yicheng:
+// Basically, UART has a read/write register RHR (receive holding register)/THR (transmit holding register),
+// and two FIFO for buffering, read FIFO and write FIFO.
+// A typical process of read and write (one byte) from/to console is shown as follows:
+//                        UART
+//               *************************
+// read: user  <--- RHR <--- read FIFO  <--- keyboard
+// write: user ---> THR ---> write FIFO ---> display
+//               *************************
 
 #include "types.h"
 #include "param.h"

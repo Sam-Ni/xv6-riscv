@@ -31,7 +31,7 @@ main()
     userinit();      // first user process
     __sync_synchronize();
     started = 1;
-  } else {
+  } else { // for other cpus, wait until cpu0 finish initialization
     while(started == 0)
       ;
     __sync_synchronize();

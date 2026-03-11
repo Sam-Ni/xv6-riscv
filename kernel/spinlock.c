@@ -31,12 +31,17 @@ acquire(struct spinlock *lk)
   //   amoswap.w.aq a5, a5, (s1)
   while(__sync_lock_test_and_set(&lk->locked, 1) != 0)
     ;
+  // yicheng: acquire semantics: https://pdos.csail.mit.edu/6.828/2019/lec/l-locks.pdf
+  //     amoswap.w.aq does two things: 
+  //     1. atomic swap; 2. achieve acquire barrier.
 
   // Tell the C compiler and the processor to not move loads or stores
   // past this point, to ensure that the critical section's memory
   // references happen strictly after the lock is acquired.
   // On RISC-V, this emits a fence instruction.
   __sync_synchronize();
+  // yicheng: redundant?
+  // yicheng: memory barrier: https://peeterjoot.wordpress.com/2009/11/29/an-attempt-to-illustrate-differences-between-memory-ordering-and-atomic-access/
 
   // Record info about lock acquisition for holding() and debugging.
   lk->cpu = mycpu();
@@ -58,6 +63,7 @@ release(struct spinlock *lk)
   // the lock is released.
   // On RISC-V, this emits a fence instruction.
   __sync_synchronize();
+  // redunant
 
   // Release the lock, equivalent to lk->locked = 0.
   // This code doesn't use a C assignment, since the C standard
@@ -67,6 +73,8 @@ release(struct spinlock *lk)
   //   s1 = &lk->locked
   //   amoswap.w zero, zero, (s1)
   __sync_lock_release(&lk->locked);
+  // yicheng: __sync_lock_release does two things: 
+  //          1. atomic swap; 2. provide release barrier
 
   pop_off();
 }

@@ -68,6 +68,9 @@ cpuid()
   return id;
 }
 
+// yicheng: disabling interrupts provides the abstraction
+//          that processes run on a single CPU.
+
 // Return this CPU's cpu struct.
 // Interrupts must be disabled.
 struct cpu*

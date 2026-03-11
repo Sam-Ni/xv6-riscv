@@ -203,6 +203,7 @@ ialloc(uint dev, short type)
   struct buf *bp;
   struct dinode *dip;
 
+  // yicheng: inum 0 indicates an inode error
   for(inum = 1; inum < sb.ninodes; inum++){
     bp = bread(dev, IBLOCK(inum, sb));
     dip = (struct dinode*)bp->data + inum%IPB;
@@ -373,6 +374,7 @@ iunlockput(struct inode *ip)
 void
 ireclaim(int dev)
 {
+  // yicheng: the 0th inode indicates error
   for (int inum = 1; inum < sb.ninodes; inum++) {
     struct inode *ip = 0;
     struct buf *bp = bread(dev, IBLOCK(inum, sb));
@@ -699,6 +701,8 @@ namex(char *path, int nameiparent, char *name)
     iunlockput(ip);
     ip = next;
   }
+  // yicheng:
+  // corner case: the path passed in is "".
   if(nameiparent){
     iput(ip);
     return 0;

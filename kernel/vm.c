@@ -35,6 +35,8 @@ kvmmake(void)
   // PLIC
   kvmmap(kpgtbl, PLIC, PLIC, 0x4000000, PTE_R | PTE_W);
 
+  // 0x4000000 / 0x1000 = 0x4000
+
   // map kernel text executable and read-only.
   kvmmap(kpgtbl, KERNBASE, KERNBASE, (uint64)etext-KERNBASE, PTE_R | PTE_X);
 
@@ -449,6 +451,7 @@ copyinstr(pagetable_t pagetable, char *dst, uint64 srcva, uint64 max)
 // that was lazily allocated in sys_sbrk().
 // returns 0 if va is invalid or already mapped, or if
 // out of physical memory, and physical address if successful.
+// yicheng: `read` is not used for simplicity.
 uint64
 vmfault(pagetable_t pagetable, uint64 va, int read)
 {

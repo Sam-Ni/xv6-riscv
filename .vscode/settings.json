@@ -1,0 +1,10 @@
+{
+  "files.associations": {
+    "condition_variable": "c",
+    "mutex": "c",
+    "ostream": "c",
+    "stop_token": "c",
+    "types.h": "c",
+    "defs.h": "c"
+  }
+}

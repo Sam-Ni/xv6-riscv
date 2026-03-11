@@ -18,6 +18,7 @@
 // PHYSTOP -- end RAM used by the kernel
 
 // qemu puts UART registers here in physical memory.
+// IRQ: https://github.com/qemu/qemu/blob/master/include/hw/riscv/virt.h#L94
 #define UART0 0x10000000L
 #define UART0_IRQ 10
 

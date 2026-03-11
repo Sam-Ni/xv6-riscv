@@ -41,6 +41,7 @@ static struct disk {
   // our own book-keeping.
   char free[NUM];  // is a descriptor free?
   uint16 used_idx; // we've looked this far in used[2..NUM].
+  // yicheng: number of virtio interrupts that have been deal with
 
   // track info about in-flight operations,
   // for use when completion interrupt arrives.
